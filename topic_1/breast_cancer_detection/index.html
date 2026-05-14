@@ -362,9 +362,19 @@ bc.gbm &lt;- function(breastcancer.train, breastcancer.valid, y3, num.trees, j, 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>         interaction.depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>         cv.folds <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>)</span></span></code></pre></div>
 <p><strong>Below is the estimated optimal number of iterations</strong></p>
-
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/est_opt_Interations_hu_96c92d4654a940c9.png" 
+                    width="1000" height="714" alt="" ><figcaption>Optimal Number of Iteration</figcaption></figure>
+    </div>
+</div>
 <p><strong>Below is the important variables</strong></p>
-
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/important_var_hu_2a97830413218e59.png" 
+                    width="1000" height="714" alt="" ><figcaption>Important Variables</figcaption></figure>
+    </div>
+</div>
 <p><strong>Confusion matrix of Optimal Boosting Model</strong></p>
 <p>Example code:</p>
 <div class="columns is-centered container"><div class="column is-two-thirds"><pre><code class="code-highlight language-R">
@@ -451,7 +461,12 @@ Specificity= TN/(TN+FP)= 69/(69+1)=98.57%</p>
 <p>With threshold = 1, we are at the lower left of the chart where we do not identify any positive cases (TPR = FPR = 0). As we decrease the threshold, we move along the curve to the right and the model classifies more positive cases. Thus, TPR and FPR increases.</p>
 <p>With threshold = 0, we are at the most upper right side of the curve where the model classifies all data points as positive; thus, TPR and FPR = 1.0). If we prioritize high sensitivity (true positive) model, we choose cutoff value toward the top-left corner of the curve, where as if we prioritize high specificity (true negative), we choose cutoff value toward the top-right corner.</p>
 <p>The above ROC curve tells us that with small decrease in threshold, the increase in true positive rate is very sharp. Then, after reaching certain threshold, the improvement in detecting true positive rate may not outweigh the cost of misclassifying positive case. Furthermore, the area under the curve (AUC) for our ROC Curve is 95.80% We may need to consult to medical expert to determine the threshold to get the optimum model.</p>
-
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/roc_hu_fc22247b04f12292.png" 
+                    width="1000" height="714" alt="" ><figcaption>ROC Curve</figcaption></figure>
+    </div>
+</div>
 <h1 id="conclusion">Conclusion</h1>
 <p>From EDA, most values of the variables in Wisconsin breast cancer dataset are concentrated toward low values. It is understandable since there will be more “benign” cases than “malignant” case in the test results. As mentioned above, there are 357 observations (62.7%) for benign and 212 observations (37.3%) for malignant.</p>
 <p>There are many correlated variables since 30 measurements (independent variables) are derived from 10 characteristics of cell nuclei such as radius, texture, perimeter, area, smoothness, compactness, concavity, concave Points, symmetry, and fractal dimension.</p>
