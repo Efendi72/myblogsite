@@ -104,9 +104,9 @@
                 
                   
                     
-                    <a href="https://example.com/ru/" class="dropdown-item" 
+                    <a href="https://example.com/id/" class="dropdown-item" 
                         style="text-align: center; color:#999; padding-right: 0.82em !important ; padding-left: 0.82em !important;">
-                        RU
+                        ID
                     </a>
                     
                   
@@ -201,9 +201,9 @@
                   
                     
                       
-                      <a href="https://example.com/ru/" class="dropdown-item" 
+                      <a href="https://example.com/id/" class="dropdown-item" 
                           style="text-align: center; color:#999; padding-right: 0.82em !important ; padding-left: 0.82em !important;">
-                          RU
+                          ID
                       </a>
                       
                     
@@ -227,14 +227,241 @@
         <div class="divider"></div>
         
         <section class="section content has-text-justified">
-          <p>This is the real text of the article.</p>
-<p>[Breast Cancer Method](C:\hugo\myblogsite\demoblog\content\topic_1\example_3_topic_1 - Copy\Breast_Cancer_Detection-Image2.png)</p>
-<p>Example code:</p>
-<div class="columns is-centered container"><div class="column is-two-thirds"><pre><code class="code-highlight language-python">
-def dummy_function(arg1):
-    print(&#34;dummy function&#34;)
-    return arg1 </code></pre></div>
+          <h2 id="i-problem-statement-or-data-sources">I. Problem Statement or Data Sources</h2>
+<p>We use Wisconsin breast cancer dataset which can be obtained at UCI machine learning repository or at Kaggle website to build classification models.</p>
+<p>The dataset consists of 569 observations of measurements that are taken from digitized images of fine needle aspiration cytology of breast masses.</p>
+<p>It has 32 variables: one binary response variable, “diagnosis” (“M” for malignant or “B” for benign) and thirty-one independent variables .</p>
+<p>These independent variables consist of one identification number variables and 30 numeric measurements of the mean, the standard error, and the worst (largest value) for 10 different characteristics of cell nuclei such as radius, texture, perimeter, area, smoothness, compactness, concavity, concave Points, symmetry, and fractal dimension .</p>
+<h2 id="ii-objective">II. Objective</h2>
+<p>We are interested in finding a model that can accurately predicting whether a patient has malignant or benign cyst breast cancer given measurements from fine needle aspiration test.</p>
+<p>In other words, we are interest in a model with the lowest misclassification rate.</p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/Breast_Cancer_Detection-Image2_hu_89aa0285112d0e17.png" 
+                    width="600" height="337" alt="" ><figcaption>Breast Cancer Detection Flow</figcaption></figure>
+    </div>
 </div>
+<h2 id="iii-explanatory-data-analysis">III. EXPLANATORY DATA ANALYSIS</h2>
+<h3 id="iiia-correlation-matrix">IIIA. Correlation Matrix</h3>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/breast_cancer-corr_matrix_hu_20fb2dddfa287879.png" 
+                    width="1000" height="714" alt="" ><figcaption>Correlation Matrix</figcaption></figure>
+    </div>
+</div>
+<ul>
+<li>“V3 (radius mean)” is highly correlated to other independent variables such as “V5, perimeter mean” (0.99), “V6, area mean” (0.99), “V23, radius worst” (0.97), “V25, perimeter worst” (0.97), and “V26, area worst” (0.94).</li>
+</ul>
+<h3 id="iiib-histogram">IIIB. Histogram</h3>
+<p>Below are histograms of a response variable and some independent variables.</p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/breast_cancer-histogram_hu_94019cd0f62faaa.png" 
+                    width="1000" height="714" alt="" ><figcaption>Histogram</figcaption></figure>
+    </div>
+</div>
+<p>The histogram of the response variable, “diagnosis” shows that:</p>
+<ul>
+<li>we have more 0 value (which stands for “benign”) than 1 value (which stands for “malignant”).</li>
+<li>Thus, there are 357 observations (62.7%) for benign and 212 observations (37.3%) for malignant.</li>
+<li>Although it is understandable that there should be more benign result than malignant result, 37% test result indicating malignant is quite high. Three people out of ten people that undergo fine needle aspiration test have malignant cyst.</li>
+<li>Furthermore, the histograms of independent variables show that the shape of their distribution is not really perfect bell-shaped; it is skewed to the right. Measurement results are concentrated to lower values which is in line with the proportion of the response variable, “diagnosis” between benign and malignant.</li>
+</ul>
+<h3 id="iiic-scatter-plot-between-response-variables-and-predictors">IIIC. Scatter Plot between Response Variables and Predictors</h3>
+<p>Explore the relationship between response variable, ‘diagnosis’ (0 = benign &amp; 1 = malignant) to indicate whether the breast mass is diagnosed as benign or malignant (0 = benign &amp; 1 = malignant) against some predictors using Scatter Plots</p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+  <div>
+    <img src="breast_cancer-scatter_plot1.png" style="width: 100%;">
+    <p style="text-align: center; font-style: italic;">Description 1</p>
+  </div>
+  <div>
+    <img src="breast_cancer-scatter_plot2.png" style="width: 100%;">
+    <p style="text-align: center; font-style: italic;">Description 2</p>
+  </div>
+</div>
+<ul>
+<li>The scatter plot between “radius mean (V3)” and “perimeter mean (V5)” shows that there is strong positive linear relationship between them (its regression coefficient is almost one). The higher the “radius mean”, the higher the “perimeter mean”. The magnitude values of these variables closely relate to the test result whether a patient has benign or malignant cysts. The higher both “radius mean” and “perimeter mean” the more likely the patient has malignant cyst; thus, breast cancer.</li>
+<li>On the other hand, the scatter plot between “smoothness mean (V7)” and “symmetry mean (V11)” shows somewhat positive linear relationship between them (its regression coefficient is 0.56). The higher the “smoothness mean”, the higher the “symmetry mean”. However, the higher both “smoothness mean” and “symmetry mean” does not closely relate to whether the patient has malignant cyst. In this scatter plot, we can see that even though the test result of the patient shows both low “smoothness mean” and low “symmetry mean”, the patient is still diagnosed with malignant cyst; thus, breast cancer.</li>
+</ul>
+<h3 id="iiid-box-plots-between-response-variables-and-continuous-predictors">IIID. Box Plots between Response Variables and Continuous Predictors</h3>
+<p>Side-by-Side Boxplot is used to evaluate relationship between BINARY Response Variable against Quantitative Independent Variables</p>
+<p>Moreover, we can create side-by-side box plot to explore the relationship between binary response variable, Y (‘diagnosis’) and quantitative predictors, X (‘radius se’, ‘area se’, ‘compactness se’ and ‘symmetry se’).</p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/breast_cancer-box_plot1_hu_3a3308fb048e288e.png" 
+                    width="1000" height="714" alt="" ><figcaption>Histogram</figcaption></figure>
+    </div>
+</div>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/breast_cancer-box_plot2_hu_6958fc89b25361be.png" 
+                    width="1000" height="714" alt="" ><figcaption>Histogram</figcaption></figure>
+    </div>
+</div>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/breast_cancer-box_plot3_hu_b49eb379c72d6b8f.png" 
+                    width="1000" height="714" alt="" ><figcaption>Histogram</figcaption></figure>
+    </div>
+</div>
+<p>The box plots show that:</p>
+<ul>
+<li>There seems to exist difference in the median between 0 (‘benign’) and 1 (‘malignant’) for ‘radius se’, ‘area se’, and ‘compactness se’. The median between ‘benign’ and ‘malignant’ are separately apart.</li>
+<li>However, the median between ‘benign’ and ‘malignant’ for “symmetry se” is close to each other and their main distribution (from Q1 to Q3) also overlaps.</li>
+<li>The boxplot plots also show some outliers exist in dataset (dot above the maximum value in the box plots.</li>
+</ul>
+<h2 id="iv-classification-models-boosting-model">IV. CLASSIFICATION MODELS: Boosting Model</h2>
+<p>Contrasted to random forest model that builds an ensemble of deep independent trees, “global boosting machine (gbm) model builds an ensemble of shallow trees in sequence with each tree learning and improving on the previous one.” There are some tuning parameters for boosting model that needs to be selected to improve model performance such as number of trees, learning rate, tree depth and minimum number of observations in terminal nodes.</p>
+<h4 id="reusable-function-for-boosting-model">&lsquo;Reusable&rsquo; function for Boosting Model</h4>
+<p>Example code:</p>
+<div class="columns is-centered container"><div class="column is-two-thirds"><pre><code class="code-highlight language-R">
+# Boosting Model Cross Validation
+bc.gbm &lt;- function(breastcancer.train, breastcancer.valid, y3, num.trees, j, lambda, i, inter.depth, z) {
+  breastcancer.cv.gbm &lt;- gbm(V2~.,data = breastcancer.train,
+         distribution = &#39;bernoulli&#39;,
+         n.trees = num.trees[j],
+         shrinkage = lambda[i],
+         interaction.depth = inter.depth[z],
+         cv.folds = 10)
+  perf_gbm.cv = gbm.perf(breastcancer.cv.gbm, plot.it = FALSE, method=&#34;cv&#34;)
+  predgbm.valid &lt;- predict(breastcancer.cv.gbm,newdata = breastcancer.valid[,-1],
+        n.trees = perf_gbm.cv, type=&#34;response&#34;)
+  yhat.glm &lt;- ifelse(predgbm.valid &lt; 0.5, 0, 1)
+  err.gbm &lt;- mean(yhat.glm != y3)
+  return(err.gbm)
+}</code></pre></div>
+</div>
+<h2 id="v-analyse-optimum-model">V. ANALYSE OPTIMUM MODEL</h2>
+<p>Parameter with lowest error (misclassified)</p>
+<ul>
+<li>Boosting (0.05,2000,2) = 0.03659341</li>
+</ul>
+<p>Optimal Boosting method has the following tuning parameters:</p>
+<ul>
+<li>shrinkage = 0.05,</li>
+<li>n.trees = 2000, and</li>
+<li>interaction depth = 2</li>
+</ul>
+<p>These parameter combinations habe the lowest mean validation error (0.03539823).</p>
+<p>After we select the best model, we will retrain the model using training and validation subset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid;"><code class="language-R" data-lang="R"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>bc.gbm.best <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gbm</span>(V2<span style="color:#f92672">~</span>.,data <span style="color:#f92672">=</span> breastcancer.trainvalid,
+</span></span><span style="display:flex; background-color:#3c3d38"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>         distribution <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;bernoulli&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>         n.trees <span style="color:#f92672">=</span> <span style="color:#ae81ff">2000</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>         shrinkage <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>         interaction.depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>         cv.folds <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>)</span></span></code></pre></div>
+<p><strong>Below is the estimated optimal number of iterations</strong></p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/est_opt_Interations_hu_96c92d4654a940c9.png" 
+                    width="1000" height="714" alt="" ><figcaption>Optimal Number of Iteration</figcaption></figure>
+    </div>
+</div>
+<p><strong>Below is the important variables</strong></p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/important_var_hu_2a97830413218e59.png" 
+                    width="1000" height="714" alt="" ><figcaption>Important Variables</figcaption></figure>
+    </div>
+</div>
+<p><strong>Confusion matrix of Optimal Boosting Model</strong></p>
+<p>Example code:</p>
+<div class="columns is-centered container"><div class="column is-two-thirds"><pre><code class="code-highlight language-R">
+library(caret)
+confusionMatrix(as.factor(yhat.test.glm), as.factor(breastcancer.test$V2), positive = &#34;1&#34;)</code></pre></div>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th colspan="2" rowspan="2"></th>
+      <th colspan="2" style="text-align:center;">Reference (Actual)</th>
+    </tr>
+    <tr>
+      <th style="text-align:center;">0</th>
+      <th style="text-align:center;">1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" style="vertical-align:middle;">Prediction</th>
+      <th>0</th>
+      <td style="text-align:center; background-color: #f0f8ff;"><b>69</b> (TN)</td>
+      <td style="text-align:center;">3 (FN)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td style="text-align:center;">1 (FP)</td>
+      <td style="text-align:center; background-color: #f0f8ff;"><b>40</b> (TP)</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Summary of Performance Matrix</strong></p>
+<h3 id="model-performance-metrics">Model Performance Metrics</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Metric</th>
+          <th style="text-align: left">Value</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Accuracy</strong></td>
+          <td style="text-align: left">96.46%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>95% Confidence Interval</strong></td>
+          <td style="text-align: left">(91.18%, 99.03%)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Sensitivity (Recall)</strong></td>
+          <td style="text-align: left">93.02%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Specificity</strong></td>
+          <td style="text-align: left">98.57%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Precision (Pos Pred Value)</strong></td>
+          <td style="text-align: left">97.56%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Kappa</strong></td>
+          <td style="text-align: left">0.9242</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Balanced Accuracy</strong></td>
+          <td style="text-align: left">95.80%</td>
+      </tr>
+  </tbody>
+</table>
+<p>From confusion matrix, we can calculate some diagnostic performance such as:</p>
+<ul>
+<li>Accuracy measures the number of samples correctly classified out of all the samples present in the test set. It is the measure of the model performance.</li>
+<li>Sensitivity measures the number of samples correctly classified as positive (“malignant”) when the disease (breast cancer) is present. It is true positive rate, expressed in a percentage.</li>
+<li>Specificity measures the number of samples correctly classified as negative (“benign”) when the disease (breast cancer) does NOT present. It is true negative rate, expressed in a percentage.</li>
+</ul>
+<p>CALCULATION:
+Accuracy= (TP+TN)/(TP+FP+TN+FN)=(40+69)/(40+1+69+3)=96.46%
+Sensitivity= TP/(TP+FN)= 40/(40+3)=93.02%
+Specificity= TN/(TN+FP)= 69/(69+1)=98.57%</p>
+<h2 id="create-roc-curve-of-optimal-boosting-model">Create ROC Curve of Optimal Boosting Model</h2>
+<p>ROC curve plots true positive rate (sensitivity) against false positive rate (100% - specificity) for different cut off value. Thus, each point along the ROC curve telling us the sensitivity/ specificity pair corresponding to different cut off values (threshold).</p>
+<p>With threshold = 1, we are at the lower left of the chart where we do not identify any positive cases (TPR = FPR = 0). As we decrease the threshold, we move along the curve to the right and the model classifies more positive cases. Thus, TPR and FPR increases.</p>
+<p>With threshold = 0, we are at the most upper right side of the curve where the model classifies all data points as positive; thus, TPR and FPR = 1.0). If we prioritize high sensitivity (true positive) model, we choose cutoff value toward the top-left corner of the curve, where as if we prioritize high specificity (true negative), we choose cutoff value toward the top-right corner.</p>
+<p>The above ROC curve tells us that with small decrease in threshold, the increase in true positive rate is very sharp. Then, after reaching certain threshold, the improvement in detecting true positive rate may not outweigh the cost of misclassifying positive case. Furthermore, the area under the curve (AUC) for our ROC Curve is 95.80% We may need to consult to medical expert to determine the threshold to get the optimum model.</p>
+<div class="columns is-centered container">
+    <div class="column is-full">
+        <figure><img class="rounded-corners" src="/topic_1/breast_cancer_detection/roc_hu_fc22247b04f12292.png" 
+                    width="1000" height="714" alt="" ><figcaption>ROC Curve</figcaption></figure>
+    </div>
+</div>
+<h1 id="conclusion">Conclusion</h1>
+<p>From EDA, most values of the variables in Wisconsin breast cancer dataset are concentrated toward low values. It is understandable since there will be more “benign” cases than “malignant” case in the test results. As mentioned above, there are 357 observations (62.7%) for benign and 212 observations (37.3%) for malignant.</p>
+<p>There are many correlated variables since 30 measurements (independent variables) are derived from 10 characteristics of cell nuclei such as radius, texture, perimeter, area, smoothness, compactness, concavity, concave Points, symmetry, and fractal dimension.</p>
+<p>Out of seven classification models created in this report, boosting model (algorithm) gives the lowest validation error.</p>
+<p>As can be seen in confusion matrix, the model performance is goods. The accuracy of the model is 96.49%.
+Further study can be conducted to use dimension reduction technique such as Principal Component Analysis (PCA) to fix Multicollinearity and conduct cross validation with more tuning parameters to check whether our best model is optimal model. * We can also consult to medical expert, to adjust cutoff value as the cost of misclassifying a patient is the patient’s life. Then, try using different cutoff value to get the optimal model.</p>
 
         </section>
       </div>
@@ -315,7 +542,7 @@ def dummy_function(arg1):
             <li>
               <a>
                 <span class="icon"><i class="fa fa-copyright"></i></span>
-                Julia The White - 2024
+                Efendi Sutrisno - 2026
               </a>
             </li>
           </ul>
